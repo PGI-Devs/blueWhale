@@ -1,7 +1,7 @@
 // routes/admin.routes.js
 import express from 'express';
 import { verifyToken } from '../middleware/authMiddleware.js';
-import { isAdmin } from '../middleware/isAdmin.js';
+import { authorizeRole } from '../middleware/roleMiddleware.js';
 import {
   createUser,
   listUsers,
@@ -13,10 +13,10 @@ import {
 const router = express.Router();
 
 // All routes are protected and admin-only
-router.post('/users', verifyToken, isAdmin, createUser);
-router.get('/users', verifyToken, isAdmin, listUsers);
-router.put('/users/:user_id', verifyToken, isAdmin, updateUser);
-router.delete('/users/:user_id', verifyToken, isAdmin, deleteUser);
-router.put('/users/:user_id/password', verifyToken, isAdmin, updateUserPassword);
+router.post('/users', verifyToken, authorizeRole(['admin']), createUser);
+router.get('/users', verifyToken, authorizeRole(['admin']), listUsers);
+router.put('/users/:user_id', verifyToken, authorizeRole(['admin']), updateUser);
+router.delete('/users/:user_id', verifyToken, authorizeRole(['admin']), deleteUser);
+router.put('/users/:user_id/password', verifyToken, authorizeRole(['admin']), updateUserPassword);
 
 export default router;

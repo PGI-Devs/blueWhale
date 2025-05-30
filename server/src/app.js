@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import cors from 'cors';
 import express from 'express';
 import pool from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
@@ -9,6 +10,7 @@ import employeeRoutes from './routes/employee.routes.js';
 dotenv.config();
 
 const app = express();
+app.use(cors());  // Enable CORS for frontend communication
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
 

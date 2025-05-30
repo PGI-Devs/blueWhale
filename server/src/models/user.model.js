@@ -1,6 +1,12 @@
 import pool from '../config/db.js';
 
+// Find a user by email
 export const findUserByEmail = async (email) => {
-  const [rows] = await pool.query('SELECT * FROM users WHERE email = ? AND is_active = 1', [email]);
-  return rows[0];
+  try {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
+    return rows[0]; // Assuming there's only one user with that email
+  } catch (err) {
+    console.error('Error querying the database:', err);
+    throw err;
+  }
 };

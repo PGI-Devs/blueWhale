@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { findUserByEmail } from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
-// import pool from '../config/db.js';
+import jwtConfig from '../config/jwtConfig.js';
 
 dotenv.config();
 
@@ -23,11 +23,17 @@ export const login = async (req, res) => {
       factory_location_id: user.factory_location_id,
       role: user.role
     },
-    process.env.JWT_SECRET,
-    { expiresIn: '1h' }
+    jwtConfig.secret,
+    { expiresIn: jwtConfig.expiresIn }
   );
 
-  res.json({ token });
+  res.json({ token , role: user.role });
 };
 
+
+
+//////////logout=---------
+export const logout = (req, res) => {
+    res.json({ message: 'Logged out successfully' });
+};
 

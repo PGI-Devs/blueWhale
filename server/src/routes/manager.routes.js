@@ -1,11 +1,13 @@
 // routes/manager.routes.js
 import express from 'express';
 import { verifyToken } from '../middleware/authMiddleware.js';
-import { isManager } from '../middleware/isManager.js';
-import { querymy } from '../controllers/materials.controller.js';
+import { authorizeRole } from '../middleware/roleMiddleware.js';
+import { createEmployee, getEmployees } from '../controllers/employee.controller.js';
 
 const router = express.Router();
 
 // All routes are protected ay
-router.get('/querymy', verifyToken, isManager, querymy);
+
+router.post('/employees', verifyToken, authorizeRole(['general manager']), createEmployee);
+router.get('/employees', verifyToken, authorizeRole(['general manager']), getEmployees);
 export default router;
